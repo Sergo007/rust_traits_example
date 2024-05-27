@@ -6,12 +6,23 @@ trait Tr1 {
     }
     // fn get_value(&self) -> Option<i32>;
 }
+
+// will compile (create new function) once for all used types
 fn print_value(s: &dyn Tr1) {
     match s.get_value() {
         Some(v) => println!("Value is {}", v),
         None => println!("Value is not available"),
     }
 }
+
+// will compile (create new function) for ceach used type
+fn print_value_genic<T: Tr1>(s: &T) {
+    match s.get_value() {
+        Some(v) => println!("Value is {}", v),
+        None => println!("Value is not available"),
+    }
+}
+
 #[derive(Debug)]
 struct St1 {
     value: i32,
@@ -52,4 +63,8 @@ fn main() {
     print_value(&s2);
     println!("called print_value(&s3)");
     print_value(&s3);
+    println!("called print_value_genic(&s2)");
+    print_value_genic(&s2);
+    println!("called print_value_genic(&s3)");
+    print_value_genic(&s3);
 }
